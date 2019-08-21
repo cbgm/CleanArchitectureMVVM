@@ -6,13 +6,13 @@ import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.*
 
 
-abstract class BaseUseCase<T, in Params> {
+abstract class BaseUseCase<T, S: Any, in Params> {
 
    var job: Job? = null
 
    abstract suspend fun buildUseCaseObservable(param: Params): Result<Any>
 
-   fun execute(observer: BaseObserver<T>? = null, param: Params) {
+   fun execute(observer: BaseObserver<T, S>? = null, param: Params) {
       dispose()
       job = CoroutineScope(Dispatchers.Main).launch {
          val result = buildUseCaseObservable(param)
@@ -21,7 +21,7 @@ abstract class BaseUseCase<T, in Params> {
    }
 
 
-   fun executeWithTimeout(observer: BaseObserver<T>? = null, param: Params, timeout: Long) {
+   fun executeWithTimeout(observer: BaseObserver<T, S>? = null, param: Params, timeout: Long) {
       dispose()
       job = CoroutineScope(Dispatchers.Main).launch {
          val task = GlobalScope.async(Dispatchers.IO) { buildUseCaseObservable(param) }
@@ -35,7 +35,7 @@ abstract class BaseUseCase<T, in Params> {
       }
    }
 
-   fun executeLong(observer: BaseObserver<T>? = null, param: Params) {
+   fun executeLong(observer: BaseObserver<T, S>? = null, param: Params) {
       dispose()
       job = CoroutineScope(Dispatchers.IO).launch {
          val result = buildUseCaseObservable(param)

@@ -27,7 +27,7 @@ inline fun <T : Any> Result<T>.onError(action: (Throwable) -> Unit) {
    if (this is Result.Error && exception != null) action(exception)
 }
 
-fun <T> Result<Any>.emit(observer: BaseObserver<T>?){
+fun <T, S: Any> Result<Any>.emit(observer: BaseObserver<T, S>?){
    this.onSuccess { observer?.onSuccess(it as T) }
    this.onComplete { observer?.onComplete() }
    this.onError { observer?.onError(it) }

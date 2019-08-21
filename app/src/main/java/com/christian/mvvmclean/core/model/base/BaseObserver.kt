@@ -1,16 +1,17 @@
 package com.christian.mvvmclean.core.model.base
 
+import androidx.lifecycle.MutableLiveData
+import com.christian.mvvmclean.core.BaseViewModel.State
 
-abstract class BaseObserver<Any> {
-   open fun onSuccess(value: Any) {
-      //implemented in child
+
+abstract class BaseObserver<in T ,in S: Any>(private val stateHolder: MutableLiveData<State<S>>) {
+   open fun onSuccess(value: T) {
    }
 
    open fun onError(throwable: Throwable) {
-      //implemented in child
+      stateHolder.value = State.Fail(throwable.message.toString())
    }
 
    open fun onComplete() {
-      //implemented in child
    }
 }

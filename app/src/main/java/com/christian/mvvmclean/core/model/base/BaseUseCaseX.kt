@@ -7,13 +7,13 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
 
-abstract class BaseUseCaseX<T, in Params> {
+abstract class BaseUseCaseX<T, S: Any, in Params> {
 
     abstract suspend fun buildUseCaseObservable(param: Params): Result<Any>
 
     fun execute(
         scope: CoroutineScope,
-        observer: BaseObserver<T>? = null,
+        observer: BaseObserver<T, S>? = null,
         param: Params,
         timeout: Long? = null
     ) {

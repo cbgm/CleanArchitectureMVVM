@@ -14,13 +14,9 @@ class OverviewViewModel(private val getAllPosts: GetAllPosts) : BaseViewModel() 
 
     val posts = MutableLiveData<State<PostsOverviewEntity>>()
 
-    private inner class GetPostsObserver : BaseObserver<PostsOverview>() {
+    private inner class GetPostsObserver : BaseObserver<PostsOverview, PostsOverviewEntity>(posts) {
         override fun onSuccess(value: PostsOverview) {
             posts.value = State.Success(PostsOverviewDomainMapper.transform(value))
-        }
-
-        override fun onError(throwable: Throwable) {
-            posts.value = State.Fail(throwable.message.toString())
         }
     }
 
