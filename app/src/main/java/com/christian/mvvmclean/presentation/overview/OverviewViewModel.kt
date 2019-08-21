@@ -3,7 +3,7 @@ package com.christian.mvvmclean.presentation.overview
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.christian.mvvmclean.core.BaseViewModel
-import com.christian.mvvmclean.core.model.single.DefaultSingleObserver
+import com.christian.mvvmclean.core.model.base.BaseObserver
 import com.christian.mvvmclean.domain.model.PostsOverview
 import com.christian.mvvmclean.domain.usecase.GetAllPosts
 import com.christian.mvvmclean.presentation.overview.mapper.PostsOverviewDomainMapper
@@ -14,7 +14,7 @@ class OverviewViewModel(private val getAllPosts: GetAllPosts) : BaseViewModel() 
 
     val posts = MutableLiveData<State<PostsOverviewEntity>>()
 
-    private inner class GetPostsObserver : DefaultSingleObserver<PostsOverview>() {
+    private inner class GetPostsObserver : BaseObserver<PostsOverview>() {
         override fun onSuccess(value: PostsOverview) {
             posts.value = State.Success(PostsOverviewDomainMapper.transform(value))
         }
